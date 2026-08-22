@@ -4964,8 +4964,8 @@ export class Synth {
 		
 		// Post processing parameters:
 		const volume: number = +this.volume;
-		const limitDecay: number = 1.0 - Math.pow(0.5, 4.0 / this.samplesPerSecond);
-		const limitRise: number = 1.0 - Math.pow(0.5, 4000.0 / this.samplesPerSecond);
+		// const limitDecay: number = 1.0 - Math.pow(0.5, 4.0 / this.samplesPerSecond);
+		// const limitRise: number = 1.0 - Math.pow(0.5, 4000.0 / this.samplesPerSecond);
 		let limit: number = +this.limit;
 		
 		let bufferIndex: number = 0;
@@ -5070,13 +5070,8 @@ export class Synth {
 			// Post processing:
 			for (let i: number = bufferIndex; i < runEnd; i++) {
 				// A compressor/limiter.
-				const sampleL = outputDataL[i];
-				const sampleR = outputDataR[i];
-				const abs: number = Math.max(Math.abs(sampleL), Math.abs(sampleR));
-				limit += (abs - limit) * (limit < abs ? limitRise : limitDecay * (1.0 + limit));
-				const limitedVolume = volume / (limit >= 1 ? limit * 1.05 : limit * 0.8 + 0.25);
-				outputDataL[i] = sampleL * limitedVolume;
-				outputDataR[i] = sampleR * limitedVolume;
+				outputDataL[i] /= volume;
+				outputDataR[i] /= volume;
 			}
 			
 			bufferIndex += runLength;
