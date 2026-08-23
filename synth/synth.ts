@@ -5070,8 +5070,8 @@ export class Synth {
 			// Post processing:
 			for (let i: number = bufferIndex; i < runEnd; i++) {
 				// A compressor/limiter.
-				outputDataL[i] /= volume;
-				outputDataR[i] /= volume;
+				outputDataL[i] *= volume;
+				outputDataR[i] *= volume;
 			}
 			
 			bufferIndex += runLength;
